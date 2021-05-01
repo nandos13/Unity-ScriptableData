@@ -1,0 +1,17 @@
+{
+    "name": "JakePerry.Unity.ScriptableData.Editor",
+    "references": [
+        "GUID:251c55666c310c54b8d88e6c18aa2414"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

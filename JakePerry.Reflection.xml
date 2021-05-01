@@ -1,0 +1,194 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>JakePerry.Reflection</name>
+    </assembly>
+    <members>
+        <member name="M:JakePerry.Reflection.AttributeUtility.EmulateGetCustomAttribute(System.Attribute[])">
+            <summary>
+            Emulate the implementation of <see cref="M:System.Attribute.GetCustomAttribute(System.Reflection.Assembly,System.Type)"/> methods
+            to get the first matching <see cref="T:System.Attribute"/>.
+            </summary>
+        </member>
+        <member name="M:JakePerry.Reflection.AttributeUtility.GetCustomAttribute(System.Reflection.ICustomAttributeProvider,System.Type,System.Boolean)">
+            <summary>
+            Helper method that invokes the appropriate overload for the <see cref="M:System.Attribute.GetCustomAttribute(System.Reflection.Assembly,System.Type)"/> method
+            depending on the element object's type.
+            </summary>
+            <param name="element">The element object.</param>
+            <param name="attributeType">The type, or a base type, of the custom attribute to search for.</param>
+            <param name="inherit">
+            If true, specified to also search the ancestors of element for custom attributes,
+            provided element is a <see cref="T:System.Reflection.MemberInfo"/> or a <see cref="T:System.Reflection.ParameterInfo"/>
+            </param>
+            <inheritdoc cref="M:System.Attribute.GetCustomAttribute(System.Reflection.Assembly,System.Type,System.Boolean)"/>
+        </member>
+        <member name="M:JakePerry.Reflection.AttributeUtility.EnumerateDecorations``1(System.Collections.Generic.IEnumerable{System.Reflection.ICustomAttributeProvider},System.Predicate{System.Reflection.ICustomAttributeProvider},System.Boolean)">
+            <summary>
+            Enumerates all attributes of a given type which decorate any of the target attribute providers.
+            </summary>
+            <typeparam name="TAttributeType">The attribute type to search for.</typeparam>
+            <param name="targets">A collection of attribute-providing objects to be checked for attributes of the given type.</param>
+            <param name="filter">An optional predicate that can filter attribute providers against a custom criteria.</param>
+            <param name="inherit">When true, look up the hierarchy chain for the inherited custom attribute.</param>
+            <returns>
+            An enumeration of found attributes of type <typeparamref name="TAttributeType"/>.
+            </returns>
+        </member>
+        <member name="T:JakePerry.Reflection.CustomAttributeDecoration">
+            <summary>
+            A data structure containing an attribute and it's target.
+            </summary>
+        </member>
+        <member name="T:JakePerry.Reflection.CustomAttributeDecoration`1">
+            <summary>
+            A data structure containing an attribute and it's target.
+            </summary>
+        </member>
+        <member name="P:JakePerry.Reflection.ReflectionUtility.CurrentDomain">
+            <inheritdoc cref="P:System.AppDomain.CurrentDomain"/>
+            <remarks>
+            Shortcut for the <see cref="P:System.AppDomain.CurrentDomain"/> property.
+            </remarks>
+        </member>
+        <member name="M:JakePerry.Reflection.ReflectionUtility.GetAssemblies">
+            <inheritdoc cref="M:System.AppDomain.GetAssemblies"/>
+            <remarks>
+            Shortcut method which invokes <see cref="M:System.AppDomain.GetAssemblies"/> on the current app domain.
+            </remarks>
+        </member>
+        <member name="M:JakePerry.Reflection.ReflectionUtility.ReflectionOnlyGetAssemblies">
+            <inheritdoc cref="M:System.AppDomain.ReflectionOnlyGetAssemblies"/>
+            <remarks>
+            Shortcut method which invokes <see cref="M:System.AppDomain.ReflectionOnlyGetAssemblies"/> on the current app domain.
+            </remarks>
+        </member>
+        <member name="M:JakePerry.Reflection.ReflectionUtility.EnumerateAllTypes">
+            <summary>
+            Enumerate all types from all assemblies in the current <see cref="T:System.AppDomain"/>.
+            </summary>
+            <returns>
+            An enumeration that represents all types from all assemblies in the current <see cref="T:System.AppDomain"/>.
+            </returns>
+        </member>
+        <member name="M:JakePerry.Reflection.ReflectionUtility.GetAllTypes">
+            <summary>
+            Get all types from all assemblies in the current <see cref="T:System.AppDomain"/>.
+            </summary>
+            <returns>
+            An array of all types from all assemblies in the current <see cref="T:System.AppDomain"/>.
+            </returns>
+        </member>
+        <member name="M:JakePerry.Reflection.ReflectionUtility.GetMembers(System.Type,System.Reflection.BindingFlags,JakePerry.Reflection.MemberFlags,System.Predicate{System.Reflection.MemberInfo})">
+            <summary>
+            Searches for members of a given type using the specified binding and member flags, as well
+            as an optional filter predicate.
+            </summary>
+            <param name="type">The type to search for members.</param>
+            <param name="bindingFlags">The <see cref="T:System.Reflection.BindingFlags"/> to search with.</param>
+            <param name="memberFlags">The <see cref="T:JakePerry.Reflection.MemberFlags"/> to search with.</param>
+            <param name="memberFilter">An optional predicate that can filter members against a custom criteria.</param>
+            <returns>A collection of members defined for the given type.</returns>
+            <exception cref="T:System.ArgumentNullException"><paramref name="type"/> is null.</exception>
+            <exception cref="T:System.ArgumentException"><paramref name="memberFlags"/> is not a valid value.</exception>
+        </member>
+        <member name="M:JakePerry.Reflection.ReflectionUtility.GetMembers(System.Type,System.Reflection.BindingFlags,System.Predicate{System.Reflection.MemberInfo})">
+            <inheritdoc cref="M:JakePerry.Reflection.ReflectionUtility.GetMembers(System.Type,System.Reflection.BindingFlags,JakePerry.Reflection.MemberFlags,System.Predicate{System.Reflection.MemberInfo})"/>
+        </member>
+        <member name="M:JakePerry.Reflection.ReflectionUtility.GetMembers(System.Type,System.Reflection.BindingFlags,JakePerry.Reflection.MemberFlags)">
+            <inheritdoc cref="M:JakePerry.Reflection.ReflectionUtility.GetMembers(System.Type,System.Reflection.BindingFlags,JakePerry.Reflection.MemberFlags,System.Predicate{System.Reflection.MemberInfo})"/>
+        </member>
+        <member name="M:JakePerry.Reflection.ReflectionUtility.CheckTypeImplementsInterfaceOfGenericDefinition(System.Type,System.Type)">
+            <summary>
+            Checks if a type <paramref name="c"/> implements one or more interfaces
+            constructed from a generic type definition.
+            </summary>
+            <param name="c">
+            The type to compare to the generic type definition.
+            </param>
+            <param name="genericTypeDefinition">
+            The generic type definition to be checked for in type <paramref name="c"/>'s implemented interfaces.
+            </param>
+            <remarks>Private method only, parameters are not validated.</remarks>
+        </member>
+        <member name="M:JakePerry.Reflection.ReflectionUtility.CheckTypeDerivesFromClassOfGenericDefinition(System.Type,System.Type)">
+            <summary>
+            Checks if a type <paramref name="c"/> is derived from a class that
+            is constructed from a generic type definition.
+            </summary>
+            <param name="c">
+            The type to compare to the generic type definition.
+            </param>
+            <param name="genericTypeDefinition">
+            The generic type definition to be checked for in type <paramref name="c"/>'s inheritance hierarchy.
+            </param>
+            <remarks>Private method only, parameters are not validated.</remarks>
+        </member>
+        <member name="M:JakePerry.Reflection.ReflectionUtility.TypeImplementsInterfaceOfGenericDefinition(System.Type,System.Type)">
+            <remarks></remarks>
+            <inheritdoc cref="M:JakePerry.Reflection.ReflectionUtility.CheckTypeImplementsInterfaceOfGenericDefinition(System.Type,System.Type)"/>
+        </member>
+        <member name="M:JakePerry.Reflection.ReflectionUtility.TypeDerivesFromClassOfGenericDefinition(System.Type,System.Type)">
+            <remarks></remarks>
+            <inheritdoc cref="M:JakePerry.Reflection.ReflectionUtility.CheckTypeDerivesFromClassOfGenericDefinition(System.Type,System.Type)"/>
+        </member>
+        <member name="M:JakePerry.Reflection.ReflectionUtility.TypeIsOfGenericDefinition(System.Type,System.Type)">
+            <summary>
+            Determines whether the type <paramref name="c"/> is derived from a class - or implements one
+            or more interfaces - that is constructed from a generic type definition.
+            </summary>
+            <returns>
+            <see langword="true"/> if any of these conditions is true:
+            <para>
+             * <paramref name="c"/> and <paramref name="genericTypeDefinition"/> represent the same generic type definition.
+            </para>
+            <para>
+             * <paramref name="c"/> directly or indirectly derives from a type for which <paramref name="genericTypeDefinition"/>
+             is the generic type definition.
+            </para>
+            <para>
+             * <paramref name="genericTypeDefinition"/> represents a generic interface which <paramref name="c"/>
+             implements with one or more combinations of generic arguments.
+            </para>
+            <see langword="false"/> if none of these conditions are true, if <paramref name="c"/> is null,
+            or if <paramref name="genericTypeDefinition"/> is null or is not a generic type definition.
+            </returns>
+        </member>
+        <member name="M:JakePerry.Reflection.ReflectionUtility.GetAssignableTypes(System.Type,System.Collections.Generic.IEnumerable{System.Reflection.Assembly})">
+            <summary>
+            Get all types in the specified assembiles which are assignable to the specified type.
+            </summary>
+            <param name="type">The assignee type.</param>
+            <param name="assemblies">The collection of assemblies to search.</param>
+            <returns>
+            A collection of all the types in the specified assemblies that are assignable to <paramref name="type"/>.
+            </returns>
+            <exception cref="T:System.ArgumentNullException"><paramref name="type"/> is null.</exception>
+        </member>
+        <member name="M:JakePerry.Reflection.ReflectionUtility.GetAssignableTypes(System.Type)">
+            <summary>
+            Get all types in the current <see cref="T:System.AppDomain"/> which are assignable to the specified type.
+            </summary>
+            <returns>
+            A collection of all the types in the current <see cref="T:System.AppDomain"/>'s assemblies that
+            are assignable to <paramref name="type"/>.
+            </returns>
+            <inheritdoc cref="M:JakePerry.Reflection.ReflectionUtility.GetAssignableTypes(System.Type,System.Collections.Generic.IEnumerable{System.Reflection.Assembly})"/>
+        </member>
+        <member name="M:JakePerry.Reflection.TypeExtensions.GetTypeHierarchy(System.Type)">
+            <returns>
+            An object representing the inheritance hierarchy of the current type.
+            </returns>
+        </member>
+        <member name="T:JakePerry.Reflection.TypeHierarchy">
+            <summary>
+            Represents the inheritance hierarchy of a <see cref="T:System.Type"/> object.
+            </summary>
+        </member>
+        <member name="T:JakePerry.Reflection.TypeHierarchy.Enumerator">
+            <summary>
+            An object that enumerates all types in the source type's inheritance hierarchy.
+            </summary>
+        </member>
+    </members>
+</doc>
