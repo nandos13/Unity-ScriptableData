@@ -64,7 +64,7 @@ namespace JakePerry.Unity.ScriptableData
         {
             if (TryFindDataContainerType(dataType, out Type containerType))
             {
-                return ScriptUtility.TryFindScript(containerType, out script);
+                return EditorAssetUtilities.TryFindScript(containerType, out script);
             }
 
             script = null;

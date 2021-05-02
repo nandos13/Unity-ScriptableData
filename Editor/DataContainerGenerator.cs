@@ -103,19 +103,6 @@ namespace JakePerry.Unity.ScriptableData
             return file;
         }
 
-        private static void AddLabel(UnityEngine.Object asset, string label)
-        {
-            var labels = AssetDatabase.GetLabels(asset);
-
-            foreach (var l in labels)
-                if (l == label)
-                    return;
-
-            ArrayUtility.Add(ref labels, label);
-
-            AssetDatabase.SetLabels(asset, labels);
-        }
-
         private static void GenerateForDataTypes(Type[] dataTypes)
         {
             var @namespace = $"{typeof(DataContainer).Namespace}.GeneratedClasses";
@@ -154,7 +141,7 @@ namespace JakePerry.Unity.ScriptableData
                         continue;
                     }
 
-                    AddLabel(monoScript, GENERATED_SCRIPT_LABEL);
+                    EditorAssetUtilities.AddLabel(monoScript, GENERATED_SCRIPT_LABEL);
                     debugCount++;
                 }
 
@@ -190,6 +177,10 @@ namespace JakePerry.Unity.ScriptableData
                 Logger.Log(GetTypeGenLogMessage(types));
                 GenerateForDataTypes(types.ToArray());
             }
+            else
+            {
+                Logger.Log("No scriptable data types were found, doing nothing.");
+            }
         }
 
         public static void GenerateMissingTypes()
@@ -200,6 +191,21 @@ namespace JakePerry.Unity.ScriptableData
             {
                 Logger.Log(GetTypeGenLogMessage(missingTypes));
                 GenerateForDataTypes(missingTypes.ToArray());
+            }
+            else
+            {
+                Logger.Log("No missing types were found, doing nothing.");
+            }
+        }
+
+        [UnityEditor.Callbacks.DidReloadScripts]
+        private static void OnReloadScripts()
+        {
+            if (EditorOptions.AutoGenerateContainerClasses)
+            {
+                // TODO: If EditorOptions class is turned into an editor window, change this message. (see EditorOptions todo comment.)
+                Logger.Log($"Script reload is triggering automatic generation of missing types. To disable auto generation, see the {nameof(EditorOptions)}.{nameof(EditorOptions.AutoGenerateContainerClasses)} property.");
+                GenerateMissingTypes();
             }
         }
     }

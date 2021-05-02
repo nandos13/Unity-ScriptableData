@@ -53,26 +53,12 @@ namespace JakePerry.Unity.ScriptableData
             m_dataProperty = serializedObject.FindProperty("m_data");
         }
 
-        // This iterates child properties at depth 1 (no child of child).
-        // TODO: Maybe move this to another class, maybe even extract out into another project.
-        private static IEnumerable<SerializedProperty> EnumerateChildProperties(SerializedProperty parent)
-        {
-            var copy = parent.Copy();
-            var depth = copy.depth + 1;
-
-            while (copy.Next(true))
-            {
-                if (copy.depth == depth)
-                    yield return copy;
-            }
-        }
-
         // TODO: This needs more testing with more complex data types.
         private static void DrawDataRegion(SerializedProperty property)
         {
             GUILayout.BeginVertical("GroupBox");
 
-            foreach (var dataProperty in EnumerateChildProperties(property))
+            foreach (var dataProperty in SerializedObjectUtilities.EnumerateChildProperties(property))
             {
                 EditorGUILayout.PropertyField(dataProperty);
             }
@@ -82,9 +68,8 @@ namespace JakePerry.Unity.ScriptableData
 
         private static void DrawNoTypeInfoBox()
         {
-            // TODO: Add some info to this message about how to make new struct types work with the system.
             EditorGUILayout.HelpBox(
-                $"You must select a data type from the dropdown menu above before you can modify serialized data.",
+                $"You must select a data type from the dropdown menu above before you can modify serialized data.\nUse the {nameof(ScriptableDataAttribute)} attribute to mark a struct as a serializable data type.",
                 MessageType.Info,
                 true);
         }
@@ -102,7 +87,7 @@ namespace JakePerry.Unity.ScriptableData
                 if (m_index < 1)
                 {
                     var script = MonoScript.FromScriptableObject(ScriptableObject.CreateInstance<DataContainer>());
-                    ScriptUtility.SetScriptType(serializedObject, script);
+                    SerializedObjectUtilities.SetScriptType(serializedObject, script);
                 }
                 else if (m_index <= m_types.Length)
                 {
@@ -111,7 +96,7 @@ namespace JakePerry.Unity.ScriptableData
 
                     if (ScriptableDataUtilities.TryFindScriptForDataContainer(selectedDataType, out MonoScript script))
                     {
-                        ScriptUtility.SetScriptType(serializedObject, script);
+                        SerializedObjectUtilities.SetScriptType(serializedObject, script);
                     }
                     else
                     {

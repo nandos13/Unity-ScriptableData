@@ -1,10 +1,24 @@
 ﻿using System;
 using UnityEditor;
 
-namespace JakePerry.Unity.ScriptableData
+namespace JakePerry.Unity
 {
-    public static class ScriptUtility
+    // TODO: Move this class to another project
+    public static class EditorAssetUtilities
     {
+        public static void AddLabel(UnityEngine.Object asset, string label)
+        {
+            var labels = AssetDatabase.GetLabels(asset);
+
+            foreach (var l in labels)
+                if (l == label)
+                    return;
+
+            ArrayUtility.Add(ref labels, label);
+
+            AssetDatabase.SetLabels(asset, labels);
+        }
+
         public static bool TryFindScript(Type type, out MonoScript script)
         {
             _ = type ?? throw new ArgumentNullException(nameof(type));
@@ -24,22 +38,6 @@ namespace JakePerry.Unity.ScriptableData
 
             script = null;
             return false;
-        }
-
-        public static void SetScriptType(SerializedObject serializedObject, MonoScript script, bool apply = true)
-        {
-            _ = serializedObject ?? throw new ArgumentNullException(nameof(serializedObject));
-            _ = script ?? throw new ArgumentNullException(nameof(script));
-
-            var scriptProperty = serializedObject.FindProperty("m_Script");
-
-            if (scriptProperty == null)
-                throw new ArgumentException("Failed to find m_Script property on the given SerializedObject.", nameof(serializedObject));
-
-            scriptProperty.objectReferenceValue = script;
-
-            if (apply)
-                serializedObject.ApplyModifiedProperties();
         }
     }
 }
