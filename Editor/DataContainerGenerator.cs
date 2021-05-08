@@ -9,6 +9,7 @@ using UnityEngine;
 
 namespace JakePerry.Unity.ScriptableData
 {
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "HAA0401:Possible allocation of reference type enumerator")]
     public static class DataContainerGenerator
     {
         private struct CodeFileInfo
@@ -153,7 +154,7 @@ namespace JakePerry.Unity.ScriptableData
                 }
                 else
                 {
-                    Logger.Log($"{debugCount} of {codeFileInfos.Length} files were successfully generated.");
+                    Logger.Log($"{debugCount.ToString()} of {codeFileInfos.Length.ToString()} files were successfully generated.");
                 }
             }
             finally
@@ -195,17 +196,6 @@ namespace JakePerry.Unity.ScriptableData
             else
             {
                 Logger.Log("No missing types were found, doing nothing.");
-            }
-        }
-
-        [UnityEditor.Callbacks.DidReloadScripts]
-        private static void OnReloadScripts()
-        {
-            if (EditorOptions.AutoGenerateContainerClasses)
-            {
-                // TODO: If EditorOptions class is turned into an editor window, change this message. (see EditorOptions todo comment.)
-                Logger.Log($"Script reload is triggering automatic generation of missing types. To disable auto generation, see the {nameof(EditorOptions)}.{nameof(EditorOptions.AutoGenerateContainerClasses)} property.");
-                GenerateMissingTypes();
             }
         }
     }
